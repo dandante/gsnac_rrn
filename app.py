@@ -26,7 +26,7 @@ def incoming_sms():
         return "ignoring you, wrong To: phone number"
     if not form['AccountSid'] == os.getenv('TWILIO_ACCOUNT_SID'):
         return "ignoring you, wrong Twilio SID"
-    text = "@channel Message from: {}: {}".format(form['From'],
+    text = "<!channel> Message from: {}: {}".format(form['From'],
                                                   form['Body'])
     media_keys = [x for x in form.keys() if x.startswith("MediaUrl")]
     media_urls = [form[x] for x in sorted(media_keys)]
