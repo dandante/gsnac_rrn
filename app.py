@@ -11,6 +11,12 @@ app = Flask(__name__)
 
 
 # TODO need to find out valid IPs for requests from twilio
+# so we can guard against spoofing.
+
+# TODO - set up a process to send a 'keep-alive' text every 29
+# days to stop the free number from being reclaimed. Make sure our
+# code ignores those messages and does not propagate them to Slack.
+# This can probably be done with AWS.
 
 
 @app.route('/', methods=['POST'])
