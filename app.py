@@ -22,6 +22,12 @@ def incoming_sms():
         return "ignoring you, wrong Twilio SID"
     text = "@channel Message from: {}: {}".format(form['From'],
                                                   form['Body'])
+    media_keys = [x for x in form.keys() if x.startswith("MediaUrl")]
+    media_urls = [form[x] for x in sorted(media_keys)]
+    if len(media_urls):
+        text = "{} \nAttachments: \n{}".format(text,
+                                               "\n".join(media_urls))
+
     payload = dict(channel=os.getenv('SLACK_CHANNEL'),
                    username=os.getenv('SLACK_USERNAME'),
                    icon_emoji=os.getenv('SLACK_ICON_EMOJI'),
