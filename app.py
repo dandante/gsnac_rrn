@@ -2,10 +2,11 @@
 # source .env
 # flask run
 
-from flask import Flask, request
-import requests
 import json
 import os
+from flask import Flask, request
+import requests
+from twilio.util import RequestValidator
 
 app = Flask(__name__)
 
@@ -22,6 +23,11 @@ app = Flask(__name__)
 @app.route('/', methods=['POST'])
 def incoming_sms():
     form =  request.form
+    validator = RequestValidator(os.getenv("TWILIO_AUTH_TOKEN"))
+    url = request.url.replace("http:", "https:")
+    sig = request.headers['X-Twilio-Signature']
+    if not validator.validate(url, form, sig):
+        return "oops, invalid signature, no spoofs accepted"
     if not form['To'] == os.getenv('RRN_PHONE_NUMBER'):
         return "ignoring you, wrong To: phone number"
     if not form['AccountSid'] == os.getenv('TWILIO_ACCOUNT_SID'):
