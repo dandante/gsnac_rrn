@@ -4,7 +4,7 @@
 
 import json
 import os
-from flask import Flask, request
+from flask import Flask, request, Response
 import requests
 from twilio.util import RequestValidator
 
@@ -50,4 +50,5 @@ def incoming_sms():
     # FIXME deal with MMS attachments
 
     # import IPython;IPython.embed()
-    return 'OK'
+    return Response('<?xml version="1.0" encoding="UTF-8" ?><Response></Response>',
+                    mimetype='text/xml')
